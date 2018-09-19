@@ -1,0 +1,29 @@
+{% extends 'portal/base.html' %}
+
+{% block content %}
+        <h2 align="center">Login</h2><br>
+        <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}" />
+        {% for field in form %}
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-3">
+                    {{ field.label_tag }}
+                </div>
+                <div class="col-sm-3">
+                    {{ field }}
+                </div>
+            </div>
+            <br>
+        {% endfor %}
+        {% if form.errors %}
+            <p align="center" style="color: red">Your username and password didn't match. Please try again.</p>
+        {% endif %}
+        <br>
+    <div style="text-align:center">
+        <button class="btn btn-primary" type="submit">Login</button><br><br>
+        New to Bookerr? <a href="{% url 'signup' %}"> Sign up</a>
+    </div>
+    </form>
+{% endblock %}

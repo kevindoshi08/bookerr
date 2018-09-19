@@ -1,0 +1,13 @@
+{% extends 'portal/base2.html' %}
+
+{% block content %}
+    <br>
+    <div class="container">
+         <h1 class="text-primary" style="font-weight: bold;">Profile</h1><hr><br>
+        <h4 style="text-align: center">
+            Username: {{ user.username  }}
+            <br><br>
+            Email: {{ user.email }}
+        </h4>
+    </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'portal/base2.html' %}
+{% block content %}
+    <br>
+    <div class="container">
+        <h1 class="text-primary" style="font-weight: bold;text-align: middle;">Cart<span  style="border: 1px solid ;padding:4px 8px;float: right;font-size:30px; border-radius: 5px;" class="text-success"> &#8377; {{ userDet.wallet }}</span></h1><hr><br>
+    </div>
+
+    <br>
+    <div class="container">
+        {%  for book in cartBooks  %}
+            {% if forloop.counter0|divisibleby:3 %}
+                <div class="row text-center">
+            {%  endif %}
+                  <div class="col-md-4">
+                      <div class="card bg-dark">
+                          <img class="card-img-top" src="../media/{{ book.image }}" alt="">
+                          <div class="card-content text-light">
+                              <br>
+                              <h4 style="padding-right: 20px">&#8377; {{ book.price }} </h4>
+                              <hr>
+                              <h3>{{ book.title }}</h3>
+                              <p>{{ book.author }}</p>
+                              <br>
+                          </div><!-- card content -->
+                      </div><!-- card -->
+                  </div><!-- col-md-4 -->
+            {%  if forloop.counter|divisibleby:3 or forloop.last %}
+                </div><!-- row closing --><hr>
+            {%  endif %}
+        {%  endfor %}
+    </div><!-- container -->
+{% endblock %}
+
+
+

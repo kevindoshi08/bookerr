@@ -1,0 +1,102 @@
+{% extends 'portal/base2.html' %}
+
+{% block content %}
+    <br>
+    <div id="error_message_div" style="display:none;background-color:rgba(0,0,0,0.8); z-index:99;position: absolute;width: 100vw;height:100vh;top:0px;left:0px">
+        <div style="border:1px solid darkslategrey; background-color:white; z-index:100;position: absolute;width: 30vw;height:40vh;left:50%;top:50%;transform: translate(-50%, -50%);">
+            <div class="close" id="error_message_button" style="position: absolute;top:0px;right:0px;margin: 10px 10px 0px 0px;width:30px; height:30px;">
+                    &times;
+            </div>
+            <p id="error_message" style="padding:20px;font-size:20px;margin-top:20px;color:red;">
+            </p>
+        </div>
+    </div>
+    <script>
+        var message = '{{ message }}';
+        if (message == "insufficient" || message=="duplicate" ){
+            $('#error_message_div').show();
+            if(message=="insufficient")
+                $("#error_message").html("You have insufficient balance!");
+            else if(message=="duplicate")
+                $("#error_message").html("Book already in cart!!");
+
+            $("#error_message_button").click(function(){
+                $("#error_message_div").hide();
+                window.location.href = '{% url 'home' %}';
+            });
+        }
+    </script>
+     <div class="container">
+        {%  for book in books  %}
+            {% if forloop.counter0|divisibleby:3 %}
+                <div class="row text-center">
+            {%  endif %}
+                  <div class="col-md-4">
+                      <div class="card bg-dark">
+                          <img class="card-img-top" src="../media/{{ book.image }}" alt="">
+                          <div class="card-content text-light">
+                              <br>
+                              <h4 style="padding-right: 20px"><span>&#8377; {{ book.price }}</span> <button data-identifier="buy-now-button" data-id="{{ book.id }}" data-price="{{ book.price }}" type="button" style="float: right;" class="btn btn-primary" data-toggle="modal" data-target="#buyModal">Buy Now</button> </h4>
+                              <hr>
+                               <h3>{{ book.title }}</h3>
+                              <p>{{ book.author }}</p>
+                              <br>
+                          </div><!-- card content -->
+                      </div><!-- card -->
+                  </div><!-- col-md-4 -->
+            {%  if forloop.counter|divisibleby:3 or forloop.last %}
+                </div><!-- row closing --><hr>
+            {%  endif %}
+        {%  endfor %}
+     </div><!-- container -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="buyModal" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm your purchase</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to buy worth <span id="modal-price-tag"></span>?</p>
+            </div>
+            <div class="modal-footer">
+                    <button onclick="buynow()" type="button" class="btn btn-primary" id="buy-now-confirmation" data-dismiss="modal">Buy</button>
+
+
+            </div>
+          </div>
+
+        </div>
+    </div>
+    <script>
+        $('[data-identifier="buy-now-button"]').click(function(){
+            let price = $(this).attr('data-price');
+            let id = $(this).attr('data-id');
+            console.log(price);
+            $('#modal-price-tag').html(price);
+
+            $('#buy-now-confirmation').click(function(){
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                       console.log('request successful');
+                       if(this.responseText == 'success')
+                            window.location.href = '/';
+                       else
+                           window.location.href = '/?message='+this.responseText;
+                    }
+                };
+                xhttp.open("GET", "/buynow/?id="+id, true);
+                xhttp.send();
+            });
+        });
+
+    </script>
+{% endblock %}
+
+
+

@@ -1,0 +1,31 @@
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+.page-header {
+    color: #005cbf;
+    font-weight: bold;
+}
+
+.navbar{
+    max-height: 60px;
+}
+
+.navbar a {
+    display: inline;
+    margin-right: 120px;
+    font-size: 18px;
+
+}
+
+.navbar-brand {
+    color: #005cbf !important;
+    font-weight: bold;
+    font-size: 35px !important;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 25vw;
+    object-fit: contain;
+}
